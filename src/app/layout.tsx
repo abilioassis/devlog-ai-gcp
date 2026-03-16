@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevLog",
-  description: "DevLog app",
+  title: "AI Engineering Lab",
+  description: "Portfólio de Projetos AI & Engenharia",
 };
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
               <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b px-4 md:px-6">
                 <div className="flex items-center gap-2">
                   <SidebarTrigger className="-ml-1" />
-                  <h1 className="text-lg font-semibold tracking-tight">DevLog</h1>
+                  <h1 className="text-lg font-semibold tracking-tight">AI Engineering Lab</h1>
                 </div>
                 <ThemeToggle />
               </header>
