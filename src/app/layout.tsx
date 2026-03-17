@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
+import AuthButton from "@/components/auth-button";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -40,6 +42,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster />
           <SidebarProvider>
             <AppSidebar />
             <main className="flex flex-1 w-full flex-col">
@@ -48,7 +51,10 @@ export default function RootLayout({
                   <SidebarTrigger className="-ml-1" />
                   <h1 className="text-lg font-semibold tracking-tight">AI Engineering Lab</h1>
                 </div>
-                <ThemeToggle />
+                <div className="flex items-center gap-4">
+                  <ThemeToggle />
+                  <AuthButton />
+                </div>
               </header>
               <div className="flex-1 p-4 md:p-6">
                 {children}
