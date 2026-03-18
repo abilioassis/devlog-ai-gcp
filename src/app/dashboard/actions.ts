@@ -74,3 +74,67 @@ export async function fetchBrentData(timeRange: TimeRange = "1m"): Promise<Fetch
     };
   }
 }
+
+export interface NewsArticle {
+  title: string;
+  source: string;
+  date: string;
+  url: string;
+}
+
+export interface FetchNewsResponse {
+  success: boolean;
+  data?: NewsArticle[];
+  error?: string;
+}
+
+export async function fetchNews(): Promise<FetchNewsResponse> {
+  try {
+    // Simulando delay de rede para demonstrar o carregamento independente (Suspense)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const mockNews: NewsArticle[] = [
+      {
+        title: "Petróleo fecha em alta com tensões geopolíticas renovadas",
+        source: "Reuters",
+        date: new Date().toISOString(),
+        url: "https://www.reuters.com/business/energy/",
+      },
+      {
+        title: "OPEP+ sinaliza manutenção de cortes na produção até junho",
+        source: "Bloomberg",
+        date: new Date(Date.now() - 3600000 * 5).toISOString(), // 5 horas atrás
+        url: "https://www.bloomberg.com/energy",
+      },
+      {
+        title: "Petrobras anuncia novos investimentos em campos maduros",
+        source: "Valor Econômico",
+        date: new Date(Date.now() - 86400000).toISOString(), // Ontem
+        url: "https://valor.globo.com/empresas/energia/",
+      },
+      {
+        title: "Estoques de óleo bruto nos EUA caem mais que o esperado",
+        source: "CNBC",
+        date: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 dias atrás
+        url: "https://www.cnbc.com/oil-gas/",
+      },
+      {
+        title: "Demanda global por petróleo deve crescer em 2026, diz AIE",
+        source: "Financial Times",
+        date: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 dias atrás
+        url: "https://www.ft.com/commodities",
+      },
+    ];
+
+    return {
+      success: true,
+      data: mockNews,
+    };
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    return {
+      success: false,
+      error: "Não foi possível carregar as notícias no momento.",
+    };
+  }
+}

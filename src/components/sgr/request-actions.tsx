@@ -35,7 +35,7 @@ export function RequestActions({ requestId, currentStatus }: { requestId: string
   };
 
   return (
-    <div className="flex space-x-2 mt-4">
+    <div className="flex items-center gap-2 flex-nowrap">
       <Button variant="default" size="sm" onClick={handleApprove} disabled={isPending} className="bg-green-600 hover:bg-green-700 text-white">
         Aprovar
       </Button>

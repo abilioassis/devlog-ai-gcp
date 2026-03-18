@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
+import { useMemo, useState, useEffect } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, ReferenceLine, Tooltip as RechartsTooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { BrentDataPoint } from "@/app/dashboard/actions";
 
 interface BrentChartProps {
@@ -33,6 +35,31 @@ const formatDate = (dateString: string) => {
 };
 
 export function BrentChart({ data }: BrentChartProps) {
+  const [targetPrice, setTargetPrice] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("brent-target-price");
+    if (saved) {
+      const price = parseFloat(saved);
+      if (!isNaN(price)) {
+        setTargetPrice(price);
+        setInputValue(saved);
+      }
+    }
+  }, []);
+
+  const handleApplyAlert = () => {
+    const price = parseFloat(inputValue);
+    if (!isNaN(price)) {
+      setTargetPrice(price);
+      localStorage.setItem("brent-target-price", inputValue);
+    } else {
+      setTargetPrice(null);
+      localStorage.removeItem("brent-target-price");
+    }
+  };
+
   const trendDescription = useMemo(() => {
     if (!data || data.length < 2) return "Dados insuficientes";
     const first = data[0].price;
@@ -43,9 +70,33 @@ export function BrentChart({ data }: BrentChartProps) {
 
   return (
     <Card className="flex flex-col h-full overflow-hidden">
-      <CardHeader>
-        <CardTitle>Preço do Petróleo Brent</CardTitle>
-        <CardDescription>Histórico de preços por barril</CardDescription>
+      <CardHeader className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <CardTitle>Preço do Petróleo Brent</CardTitle>
+            <CardDescription>Histórico de preços por barril</CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="price-alert" className="text-xs font-medium text-muted-foreground px-1">
+                Alerta de Preço (US$)
+              </label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="price-alert"
+                  type="number"
+                  placeholder="Ex: 85.00"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="w-24 h-9"
+                />
+                <Button onClick={handleApplyAlert} variant="outline" size="sm" className="h-9">
+                  Definir
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
         <p className="sr-only">{trendDescription}</p>
       </CardHeader>
       <CardContent className="flex-1 min-h-[350px] w-full pb-6">
@@ -98,6 +149,22 @@ export function BrentChart({ data }: BrentChartProps) {
                 stroke="var(--color-price)"
                 strokeWidth={2}
               />
+              {targetPrice !== null && (
+                <ReferenceLine
+                  y={targetPrice}
+                  stroke="var(--destructive)"
+                  strokeDasharray="4 4"
+                  strokeWidth={2}
+                  label={{
+                    value: `Alerta: ${formatCurrency(targetPrice)}`,
+                    position: "bottom",
+                    fill: "var(--foreground)",
+                    fontSize: 12,
+                    fontWeight: "600",
+                    offset: 10,
+                  }}
+                />
+              )}
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>
