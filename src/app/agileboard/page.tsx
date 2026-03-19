@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { plans } from "@/db/schema";
 
-import { createPlan } from "./actions";
+import { CreatePlanForm } from "./components/CreatePlanForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -27,16 +27,7 @@ export default async function AgileBoardDashboard() {
             <CardDescription>Comece um novo quadro de planejamento.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form action={createPlan} className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  name="name"
-                  placeholder="Nome do Plano (Ex: Sprint 01)"
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">Criar Plano</Button>
-            </form>
+            <CreatePlanForm />
           </CardContent>
         </Card>
 

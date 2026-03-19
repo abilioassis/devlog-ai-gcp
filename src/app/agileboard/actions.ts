@@ -22,7 +22,7 @@ const bucketSchema = z.object({
   planId: z.string().uuid().optional(),
 });
 
-export async function createPlan(formData: FormData) {
+export async function createPlan(prevState: any, formData: FormData) {
   const name = formData.get("name") as string;
   
   const result = createPlanSchema.safeParse({ name });
@@ -45,6 +45,9 @@ export async function createPlan(formData: FormData) {
     revalidatePath("/agileboard");
     redirect(`/agileboard/${newPlan.id}`);
   } catch (error) {
+    if ((error as any).digest?.startsWith("NEXT_REDIRECT")) {
+      throw error;
+    }
     console.error("Erro ao criar plano:", error);
     return { error: "Erro interno ao criar o plano." };
   }
