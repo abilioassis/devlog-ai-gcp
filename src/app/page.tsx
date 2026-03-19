@@ -84,6 +84,30 @@ export default function PortfolioHub() {
             </Button>
           </CardFooter>
         </Card>
+
+        <Card className="flex flex-col border-primary/20 hover:border-primary/50 transition-colors shadow-sm">
+          <CardHeader>
+            <CardTitle>🏗️ AgileBoard</CardTitle>
+            <CardDescription>Sistema de Planejamento Ágil (Kanban).</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1">
+            <p className="text-sm text-muted-foreground">
+              Plataforma de gestão de projetos com suporte a múltiplos quadros. Arquitetura: Estruturação estrita de pastas por domínio, persistência escalável via Drizzle ORM, validação de tipos em tempo real com Zod e UX reativa.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Badge variant="secondary">Next.js</Badge>
+              <Badge variant="secondary">Drizzle ORM</Badge>
+              <Badge variant="secondary">Zod</Badge>
+              <Badge variant="secondary">TypeScript</Badge>
+              <Badge variant="secondary">Shadcn/UI</Badge>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/agileboard">Acessar Projeto</Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );
